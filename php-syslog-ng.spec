@@ -1,6 +1,6 @@
 %define name    php-syslog-ng
 %define version 2.9.8
-%define release %mkrel 3
+%define release %mkrel 4
 
 %define _requires_exceptions pear(\\(/usr/share/php-syslog-ng.*\\|/etc/php-syslog-ng/config.php\\|includes/.*\\))
 
@@ -19,6 +19,10 @@ Requires:   php-gd
 Requires:   php-mysql
 Requires:   php-xml
 BuildArch:  noarch
+%if %mdkversion < 201010
+Requires(post):   rpm-helper
+Requires(postun):   rpm-helper
+%endif
 BuildRoot:  %{_tmppath}/%{name}-%{version}
 
 %description
@@ -69,6 +73,7 @@ cat > %{buildroot}%{_webappconfdir}/php-syslog-ng.conf <<EOF
 Alias /php-syslog-ng %{_var}/www/%{name}
 
 <Directory "%{_var}/www/%{name}">
+    Order allow,deny
     Allow from all
     php_value memory_limit 128M 
     php_value max_execution_time 300
@@ -80,10 +85,14 @@ Alias /php-syslog-ng %{_var}/www/%{name}
 EOF
 
 %post
+%if %mdkversion < 201010
 %_post_webapp
+%endif
 
 %postun
+%if %mdkversion < 201010
 %_postun_webapp
+%endif
 
 %clean
 rm -rf %{buildroot}
