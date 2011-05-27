@@ -1,6 +1,6 @@
 %define name    php-syslog-ng
 %define version 2.9.8
-%define release %mkrel 5
+%define release %mkrel 6
 
 %define _requires_exceptions pear(\\(/usr/share/php-syslog-ng.*\\|/etc/php-syslog-ng/config.php\\|includes/.*\\))
 
