@@ -1,0 +1,411 @@
+diff -Naur --exclude '*~' php-syslog-ng/html/includes/about.php php-syslog-ng-fhs/html/includes/about.php
+--- php-syslog-ng/html/includes/about.php	2007-09-11 05:10:44.000000000 +0200
++++ php-syslog-ng-fhs/html/includes/about.php	2008-07-06 20:32:39.000000000 +0200
+@@ -1,8 +1,7 @@
+ <?php
+ // Copyright (C) 2005 Claus Lund, clauslund@gmail.com
+-$basePath = dirname( __FILE__ );
+-require_once ($basePath . "/../includes/html_header.php");
+-require_once ($basePath . "/../includes/version.php");
++require_once ("html_header.php");
++require_once ("version.php");
+ ?>
+ <body>
+ <table class="header">
+@@ -25,7 +24,7 @@
+ <?php
+ // Get a file into an array.  In this example we'll go through HTTP to get
+ // the HTML source of a URL.
+-$lines = file($basePath . "/../CHANGELOG");
++$lines = file("/usr/share/doc/php-syslog-ng/CHANGELOG");
+ 
+ // Loop through our array, show HTML source as HTML source; and line numbers too.
+ foreach ($lines as $line) {
+diff -Naur --exclude '*~' php-syslog-ng/html/includes/common_funcs.php php-syslog-ng-fhs/html/includes/common_funcs.php
+--- php-syslog-ng/html/includes/common_funcs.php	2008-05-10 19:22:55.000000000 +0200
++++ php-syslog-ng-fhs/html/includes/common_funcs.php	2008-07-06 19:12:46.000000000 +0200
+@@ -3,8 +3,7 @@
+ // Copyright (C) 2005 Claus Lund, clauslund@gmail.com
+ // Copyright (C) 2006 Clayton Dukes, cdukes@cdukes.com
+ 
+-$basePath = dirname( __FILE__ );
+-include_once ($basePath ."/../config/config.php");
++include_once ("/etc/php-syslog-ng/config.php");
+ 
+ error_reporting(E_ALL & ~E_NOTICE);
+ //------------------------------------------------------------------------
+diff -Naur --exclude '*~' php-syslog-ng/html/includes/configure.php php-syslog-ng-fhs/html/includes/configure.php
+--- php-syslog-ng/html/includes/configure.php	2008-02-04 04:29:02.000000000 +0100
++++ php-syslog-ng-fhs/html/includes/configure.php	2008-07-06 19:45:42.000000000 +0200
+@@ -1,7 +1,7 @@
+ <?php
+ // Copyright (C) 2005 Claus Lund, clauslund@gmail.com
+ 
+-require_once 'includes/html_header.php';
++require_once 'html_header.php';
+ 
+ //========================================================================
+ // BEGIN: GET THE INPUT VARIABLES
+diff -Naur --exclude '*~' php-syslog-ng/html/includes/help.php php-syslog-ng-fhs/html/includes/help.php
+--- php-syslog-ng/html/includes/help.php	2007-09-11 02:54:28.000000000 +0200
++++ php-syslog-ng-fhs/html/includes/help.php	2008-07-06 20:21:10.000000000 +0200
+@@ -1,7 +1,7 @@
+ <?php
+ // Copyright (C) 2005 Claus Lund, clauslund@gmail.com
+ 
+-require_once 'includes/html_header.php';
++require_once 'html_header.php';
+ 
+ if($dbProblem) {
+ 	echo "<b>A database connection problem was encountered.<br />Please check config/config.php to make sure everything is correct and make sure the MySQL server is up and running.</b>";
+diff -Naur --exclude '*~' php-syslog-ng/html/index.php php-syslog-ng-fhs/html/index.php
+--- php-syslog-ng/html/index.php	2008-05-10 21:35:12.000000000 +0200
++++ php-syslog-ng-fhs/html/index.php	2008-07-06 20:11:37.000000000 +0200
+@@ -3,12 +3,12 @@
+ // Copyright (C) 2006 Clayton Dukes, cdukes@cdukes.com
+ 
+ // Check to see if config.php is set, if not we need to run the installer.
+-$chk_config = file_get_contents("config/config.php");
++$chk_config = file_get_contents("/etc/php-syslog-ng/config.php");
+ if (strlen($chk_config) < 10) {
+    	header('Location: install/');
+ } else {
+-   	require_once ("config/config.php");
+-   	require_once 'includes/common_funcs.php';
++   	require_once ("/etc/php-syslog-ng/config.php");
++   	require_once '/usr/share/php-syslog-ng/includes/common_funcs.php';
+ }
+ 
+ 
+@@ -47,7 +47,7 @@
+ //------------------------------------------------------------------------
+ if(strcasecmp($pageId, "searchform") == 0) {
+ 	$addTitle = "SEARCH";
+-	require 'includes/search.php';
++	require '/usr/share/php-syslog-ng/includes/search.php';
+ }
+ elseif(strcasecmp($pageId, "login") == 0) {
+ 	$addTitle = "LOGIN";
+@@ -59,15 +59,15 @@
+ }
+ elseif(strcasecmp($pageId, "about") == 0) {
+ 	$addTitle = "ABOUT";
+-	require 'includes/about.php';
++	require '/usr/share/php-syslog-ng/includes/about.php';
+ }
+ elseif(strcasecmp($pageId, "help") == 0) {
+ 	$addTitle = "HELP";
+-	require 'includes/help.php';
++	require '/usr/share/php-syslog-ng/includes/help.php';
+ }
+ elseif(strcasecmp($pageId, "config") == 0) {
+ 	$addTitle = "CONFIG";
+-	require 'includes/configure.php';
++	require '/usr/share/php-syslog-ng/includes/configure.php';
+ }
+ elseif(strcasecmp($pageId, "Tail") == 0) {
+ 	// custom title for tail queries 
+@@ -78,19 +78,19 @@
+    	else {
+ 	   	$addTitle = $_REQUEST['title'];
+    	}
+-	require 'includes/tailresult.php';
++	require '/usr/share/php-syslog-ng/includes/tailresult.php';
+ }
+ elseif(strcasecmp($pageId, "Graph") == 0) {
+ 	$addTitle = "GRAPH RESULTS";
+-	require 'includes/graphit.php';
++	require '/usr/share/php-syslog-ng/includes/graphit.php';
+ }
+ elseif(strcasecmp($pageId, "search") == 0) {
+ 	$addTitle = "REGULAR RESULTS";
+-	require 'includes/regularresult.php';
++	require '/usr/share/php-syslog-ng/includes/regularresult.php';
+ }
+ else {
+ 	$addTitle = "SEARCH";
+-	require 'includes/search.php';
++	require '/usr/share/php-syslog-ng/includes/search.php';
+ }
+-require_once 'includes/html_footer.php';
++require_once '/usr/share/php-syslog-ng/includes/html_footer.php';
+ ?>
+diff -Naur --exclude '*~' php-syslog-ng/html/install/cemdb/bdimport.php php-syslog-ng-fhs/html/install/cemdb/bdimport.php
+--- php-syslog-ng/html/install/cemdb/bdimport.php	2008-02-04 21:53:17.000000000 +0100
++++ php-syslog-ng-fhs/html/install/cemdb/bdimport.php	2008-07-06 19:39:12.000000000 +0200
+@@ -40,8 +40,7 @@
+ // *** Accurate filename handling and urlencode in URLs
+ // *** Add Paypal button
+ 
+- $basePath = dirname( __FILE__ );
+- require_once($basePath . '/../../config/config.php' );
++ require_once('/etc/php-syslog-ng/config.php' );
+ // Database configuration
+ $db_server   = DBHOST;
+ $db_name     = DBNAME;
+diff -Naur --exclude '*~' php-syslog-ng/html/install/index.php php-syslog-ng-fhs/html/install/index.php
+--- php-syslog-ng/html/install/index.php	2007-07-06 16:17:41.000000000 +0200
++++ php-syslog-ng-fhs/html/install/index.php	2008-07-06 20:11:59.000000000 +0200
+@@ -6,11 +6,11 @@
+ * PHP-Syslog-NG is Free Software
+ */
+ 
+-if (file_exists( '../config/config.php' ) && filesize( '../config/config.php' ) > 10) {
++if (file_exists( '/etc/php-syslog-ng/config.php' ) && filesize( '/etc/php-syslog-ng/config.php' ) > 10) {
+ 	header( "Location: ../index.php" );
+ 	exit();
+ }
+-require_once( '../includes/version.php' );
++require_once( '/usr/share/php-syslog-ng/includes/version.php' );
+ 
+ /** Include common.php */
+ include_once( "common.php" );
+@@ -24,7 +24,7 @@
+ 	echo '<tr>';
+ 	echo '<td class="item">' . $folder . '/</td>';
+ 	echo '<td align="left">';
+-	echo is_writable( "../$folder" ) ? '<b><font color="green">Writeable</font></b>' : '<b><font color="red">Unwriteable</font></b>' . '</td>';
++	echo is_writable( "$folder" ) ? '<b><font color="green">Writeable</font></b>' : '<b><font color="red">Unwriteable</font></b>' . '</td>';
+ 	echo '</tr>';
+ }
+ 
+@@ -151,7 +151,7 @@
+ 	</td>
+ 	<td align="left">
+ 	<?php
+-	if (@file_exists('../config/config.php') &&  @is_writable( '../config/config.php' )){
++	if (@file_exists('/etc/php-syslog-ng/config.php') &&  @is_writable( '/etc/php-syslog-ng/config.php' )){
+ 		echo '<b><font color="green">Writeable</font></b>';
+ 	} else if (is_writable( '..' )) {
+ 		echo '<b><font color="green">Writeable</font></b>';
+@@ -292,8 +292,8 @@
+ 
+ <table class="content">
+ <?php
+-writableCell( 'config' );
+-writableCell( 'jpcache' );
++writableCell( '/etc/php-syslog-ng' );
++writableCell( '/var/lib/php-syslog-ng' );
+ ?>
+ </table>
+ </div>
+diff -Naur --exclude '*~' php-syslog-ng/html/install/install1.php php-syslog-ng-fhs/html/install/install1.php
+--- php-syslog-ng/html/install/install1.php	2008-03-21 02:20:21.000000000 +0100
++++ php-syslog-ng-fhs/html/install/install1.php	2008-07-06 20:11:59.000000000 +0200
+@@ -8,7 +8,7 @@
+ 
+ /** Include common.php */
+ include_once( 'common.php' );
+-include_once( '../includes/version.php' );
++include_once( '/usr/share/php-syslog-ng/includes/version.php' );
+ 
+ $DBhostname = mosGetParam( $_POST, 'DBhostname', 'localhost' );
+ $DBuserName = mosGetParam( $_POST, 'DBuserName', 'root' );
+diff -Naur --exclude '*~' php-syslog-ng/html/install/install2.php php-syslog-ng-fhs/html/install/install2.php
+--- php-syslog-ng/html/install/install2.php	2008-03-21 02:20:21.000000000 +0100
++++ php-syslog-ng-fhs/html/install/install2.php	2008-07-06 20:11:59.000000000 +0200
+@@ -11,8 +11,8 @@
+ 
+ // Include common.php
+ require_once( 'common.php' );
+-require_once( '../includes/database.php' );
+-require_once( '../includes/version.php' );
++require_once( '/usr/share/php-syslog-ng/includes/database.php' );
++require_once( '/usr/share/php-syslog-ng/includes/version.php' );
+ 
+ $DBhostname = mosGetParam( $_POST, 'DBhostname', '' );
+ $DBuserName = mosGetParam( $_POST, 'DBuserName', '' );
+diff -Naur --exclude '*~' php-syslog-ng/html/install/install3.php php-syslog-ng-fhs/html/install/install3.php
+--- php-syslog-ng/html/install/install3.php	2008-03-21 02:20:21.000000000 +0100
++++ php-syslog-ng-fhs/html/install/install3.php	2008-07-06 20:29:46.000000000 +0200
+@@ -8,7 +8,7 @@
+ 
+ /** Include common.php */
+ require_once( 'common.php' );
+-require_once( '../includes/version.php' );
++require_once( '/usr/share/php-syslog-ng/includes/version.php' );
+ 
+ $DBhostname = mosGetParam( $_POST, 'DBhostname', '' );
+ $DBuserName = mosGetParam( $_POST, 'DBuserName', '' );
+@@ -24,7 +24,7 @@
+ $adminEmail = mosGetParam( $_POST, 'adminEmail', '');
+ $filePerms	= mosGetParam( $_POST, 'filePerms', '');
+ $dirPerms	= mosGetParam( $_POST, 'dirPerms', '');
+-$SITEURL	= mosGetParam( $_POST, 'SITEURL', '/');
++$SITEURL	= mosGetParam( $_POST, 'SITEURL', '/php-syslog-ng/');
+ $configArray['siteUrl'] = trim( mosGetParam( $_POST, 'siteUrl', '' ) );
+ $configArray['absolutePath'] = trim( mosGetParam( $_POST, 'absolutePath', '' ) );
+ if (get_magic_quotes_gpc()) {
+diff -Naur --exclude '*~' php-syslog-ng/html/install/install4.php php-syslog-ng-fhs/html/install/install4.php
+--- php-syslog-ng/html/install/install4.php	2008-05-10 21:05:42.000000000 +0200
++++ php-syslog-ng-fhs/html/install/install4.php	2008-07-06 20:11:59.000000000 +0200
+@@ -10,9 +10,8 @@
+ define( "_VALID_MOS", 1 );
+ 
+ // Include common.php
+-$basePath = dirname( __FILE__ );
+-require_once($basePath . '/common.php' );
+-require_once($basePath . '/../includes/version.php' );
++require_once('common.php' );
++require_once('/usr/share/php-syslog-ng/includes/version.php' );
+ 
+ $DBhostname = mosGetParam( $_POST, 'DBhostname', '' );
+ $DBuserName = mosGetParam( $_POST, 'DBuserName', '' );
+@@ -140,10 +139,10 @@
+ 	return;
+ }
+ 
+-if (file_exists( '../config/config.php' )) {
+-	$canWrite = is_writable( '../config/config.php' );
++if (file_exists( '/etc/php-syslog-ng/config.php' )) {
++	$canWrite = is_writable( '/etc/php-syslog-ng/config.php' );
+ } else {
+-	$canWrite = is_writable( '..' );
++	$canWrite = is_writable( '/etc/php-syslog-ng' );
+ }
+  
+ if ($siteUrl) {
+@@ -292,7 +291,7 @@
+ 	$config .= "define('SQZ_ENABLED', FALSE);\n";
+ 	$config .= "\n?>";
+ 
+-	if ($canWrite && ($fp = fopen("../config/config.php", "w"))) {
++	if ($canWrite && ($fp = fopen("/etc/php-syslog-ng/config.php", "w"))) {
+ 		fputs( $fp, $config, strlen( $config ) );
+ 		fclose( $fp );
+ 	} else {
+diff -Naur --exclude '*~' php-syslog-ng/html/install/install.php php-syslog-ng-fhs/html/install/install.php
+--- php-syslog-ng/html/install/install.php	2008-03-21 02:20:21.000000000 +0100
++++ php-syslog-ng-fhs/html/install/install.php	2008-07-06 20:11:59.000000000 +0200
+@@ -6,13 +6,13 @@
+ * PHP-Syslog-NG is Free Software
+ */
+ 
+-if (file_exists( '../config/config.php' ) && filesize( '../config/config.php' ) > 10) {
++if (file_exists( '/etc/php-syslog-ng/config.php' ) && filesize( '/etc/php-syslog-ng/config.php' ) > 10) {
+ 	header( 'Location: ../index.php' );
+ 	exit();
+ }
+ /** Include common.php */
+ include_once( 'common.php' );
+-include_once( '../includes/version.php' );
++include_once( '/usr/share/php-syslog-ng/includes/version.php' );
+ function writableCell( $folder ) {
+ 	echo "<tr>";
+ 	echo "<td class=\"item\">" . $folder . "/</td>";
+diff -Naur --exclude '*~' php-syslog-ng/html/login.php php-syslog-ng-fhs/html/login.php
+--- php-syslog-ng/html/login.php	2008-05-10 19:18:32.000000000 +0200
++++ php-syslog-ng-fhs/html/login.php	2008-07-06 20:11:37.000000000 +0200
+@@ -12,8 +12,8 @@
+  */
+ 
+ session_start();
+-include_once ("config/config.php");
+-include_once ("includes/common_funcs.php");
++include_once ("/etc/php-syslog-ng/config.php");
++include_once ("/usr/share/php-syslog-ng/includes/common_funcs.php");
+ 
+ // If Access system is not used, then skip all this - i.e. Open system
+ if(!defined('USE_ACL') || !USE_ACL || !defined('REQUIRE_AUTH') || !REQUIRE_AUTH) {
+diff -Naur --exclude '*~' php-syslog-ng/html/logout.php php-syslog-ng-fhs/html/logout.php
+--- php-syslog-ng/html/logout.php	2008-02-06 21:53:30.000000000 +0100
++++ php-syslog-ng-fhs/html/logout.php	2008-07-06 20:11:37.000000000 +0200
+@@ -1,5 +1,5 @@
+ <?php
+-require_once ("config/config.php");
++require_once ("/etc/php-syslog-ng/config.php");
+ 	/* BEGIN: Added by BPK to reset search selections memory */
+ 	session_start();
+ 	foreach ($_SESSION as $key => $value) {
+diff -Naur --exclude '*~' php-syslog-ng/scripts/dbgen.pl php-syslog-ng-fhs/scripts/dbgen.pl
+--- php-syslog-ng/scripts/dbgen.pl	2008-03-21 04:58:29.000000000 +0100
++++ php-syslog-ng-fhs/scripts/dbgen.pl	2008-07-06 20:11:45.000000000 +0200
+@@ -27,7 +27,7 @@
+ #my $sleeptime = ".0001"; # Use this to just blast a whole bunch into the database
+ 
+ # Change below to match your config path (use full path if you run this from cron)
+-my $ngconfig = "/www/php-syslog-ng/html/config/config.php"; 
++my $ngconfig = "/etc/php-syslog-ng/config.php";
+ 
+ open( CONFIG, $ngconfig ) or die "Can't open $ngconfig : $!"; 
+ my @config = <CONFIG>; 
+diff -Naur --exclude '*~' php-syslog-ng/scripts/drop-old-tables.php php-syslog-ng-fhs/scripts/drop-old-tables.php
+--- php-syslog-ng/scripts/drop-old-tables.php	2007-07-19 00:22:51.000000000 +0200
++++ php-syslog-ng-fhs/scripts/drop-old-tables.php	2008-07-06 20:11:45.000000000 +0200
+@@ -23,9 +23,8 @@
+ // (i.e. tables logs_*). This makes it easier to clean up old data.
+ //
+ 
+-$basePath = dirname( __FILE__ );
+-include_once "$basePath/../html/includes/common_funcs.php";
+-include_once "$basePath/../html/config/config.php";
++include_once "/usr/share/php-syslog-ng/includes/common_funcs.php";
++include_once "/etc/php-syslog-ng/config.php";
+ 
+ if (!mysql_connect(DBHOST, DBADMIN, DBADMINPW)) {
+ 	print 'Could not connect to mysql';
+diff -Naur --exclude '*~' php-syslog-ng/scripts/logrotate.php php-syslog-ng-fhs/scripts/logrotate.php
+--- php-syslog-ng/scripts/logrotate.php	2008-02-27 22:44:04.000000000 +0100
++++ php-syslog-ng-fhs/scripts/logrotate.php	2008-07-06 20:11:45.000000000 +0200
+@@ -7,8 +7,8 @@
+ echo date("Y-m-d H:i:s")."\n";
+ 
+ 
+-include_once "/www/php-syslog-ng/html/includes/common_funcs.php";
+-include_once "/www/php-syslog-ng/html/config/config.php";
++include_once "/usr/share/php-syslog-ng/includes/common_funcs.php";
++include_once "/etc/php-syslog-ng/config.php";
+ 
+ $dbLink = db_connect_syslog(DBADMIN, DBADMINPW);
+ 
+diff -Naur --exclude '*~' php-syslog-ng/scripts/reloadcache.php php-syslog-ng-fhs/scripts/reloadcache.php
+--- php-syslog-ng/scripts/reloadcache.php	2008-02-28 23:06:38.000000000 +0100
++++ php-syslog-ng-fhs/scripts/reloadcache.php	2008-07-06 20:11:45.000000000 +0200
+@@ -4,8 +4,8 @@
+ echo "\nStarting to reload cache\n";
+ echo date("Y-m-d H:i:s")."\n\n";
+ 
+-require_once "/www/php-syslog-ng/html/includes/common_funcs.php";
+-require_once "/www/php-syslog-ng/html/config/config.php";
++include_once "/usr/share/php-syslog-ng/includes/common_funcs.php";
++include_once "/etc/php-syslog-ng/config.php";
+ 
+ $dbLink = db_connect_syslog(DBUSER, DBUSERPW);
+ 
+diff -Naur --exclude '*~' php-syslog-ng/scripts/resetusers.sh php-syslog-ng-fhs/scripts/resetusers.sh
+--- php-syslog-ng/scripts/resetusers.sh	2007-07-19 00:41:28.000000000 +0200
++++ php-syslog-ng-fhs/scripts/resetusers.sh	2008-07-06 20:11:45.000000000 +0200
+@@ -1,6 +1,6 @@
+ #!/bin/bash
+ # WARNING: THIS WILL DELETE ALL USERS FROM THE DATABASE AND CREATE NEW ONES
+-config="/www/php-syslog-ng/html/config/config.php"
++config="/etc/php-syslog-ng/config.php";
+ 
+ user=`cat $config | grep "'DBADMIN'" | awk -F"'" '{print $4}' `
+ pw=`cat $config | grep "'DBADMINPW'" | awk -F"'" '{print $4}' `
+diff -Naur --exclude '*~' php-syslog-ng/scripts/SqueezeDB-v2.0.php php-syslog-ng-fhs/scripts/SqueezeDB-v2.0.php
+--- php-syslog-ng/scripts/SqueezeDB-v2.0.php	2008-03-05 07:06:26.000000000 +0100
++++ php-syslog-ng-fhs/scripts/SqueezeDB-v2.0.php	2008-07-06 20:11:45.000000000 +0200
+@@ -106,8 +106,8 @@
+ 
+ $max_sql_in_list_count = 255;
+ 
+-include_once "/www/php-syslog-ng/html/includes/common_funcs.php";
+-include_once "/www/php-syslog-ng/html/config/config.php";
++include_once "/usr/share/php-syslog-ng/includes/includes/common_funcs.php";
++include_once "/etc/php-syslog-ng/config.php";
+ 
+ 
+ $time_start = get_microtime();
+diff -Naur --exclude '*~' php-syslog-ng/scripts/tests/find_missing_sequences.pl php-syslog-ng-fhs/scripts/tests/find_missing_sequences.pl
+--- php-syslog-ng/scripts/tests/find_missing_sequences.pl	2008-02-24 07:17:54.000000000 +0100
++++ php-syslog-ng-fhs/scripts/tests/find_missing_sequences.pl	2008-07-06 19:08:42.000000000 +0200
+@@ -12,7 +12,7 @@
+ use DBI;
+ 
+ # Change below to match your config path (use full path if you run this from cron)
+-my $ngconfig = "/www/php-syslog-ng/html/config/config.php"; 
++my $ngconfig = "/etc/php-syslog-ng/config.php";
+ 
+ open( CONFIG, $ngconfig ) or die "Can't open $ngconfig : $!"; 
+ my @config = <CONFIG>; 
