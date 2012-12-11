@@ -106,3 +106,31 @@ rm -rf %{buildroot}
 %{_var}/www/%{name}
 %attr(-,apache,apache) %{_var}/lib/%{name}
 %{_datadir}/%{name}
+
+
+%changelog
+* Fri May 27 2011 Oden Eriksson <oeriksson@mandriva.com> 2.9.8-6mdv2011.0
++ Revision: 679625
+- mass rebuild
+
+* Tue Dec 07 2010 Oden Eriksson <oeriksson@mandriva.com> 2.9.8-5mdv2011.0
++ Revision: 614540
+- the mass rebuild of 2010.1 packages
+
+* Sun Feb 07 2010 Guillaume Rousse <guillomovitch@mandriva.org> 2.9.8-4mdv2010.1
++ Revision: 501753
+- rely on filetrigger for reloading apache configuration begining with 2010.1, rpm-helper macros otherwise
+
+* Sun Jul 19 2009 Raphaël Gertz <rapsys@mandriva.org> 2.9.8-3mdv2010.0
++ Revision: 397613
+- Rebuild
+
+* Thu Jan 01 2009 Oden Eriksson <oeriksson@mandriva.com> 2.9.8-2mdv2009.1
++ Revision: 323109
+- rebuild
+
+* Sun Jul 06 2008 Guillaume Rousse <guillomovitch@mandriva.org> 2.9.8-1mdv2009.0
++ Revision: 232274
+- import php-syslog-ng
+
+
