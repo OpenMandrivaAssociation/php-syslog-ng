@@ -1,8 +1,6 @@
 %define name    php-syslog-ng
 %define version 2.9.8
-%define release %mkrel 6
-
-%define _requires_exceptions pear(\\(/usr/share/php-syslog-ng.*\\|/etc/php-syslog-ng/config.php\\|includes/.*\\))
+%define release 7
 
 Name:       %{name}
 Version:    %{version}
@@ -19,11 +17,6 @@ Requires:   php-gd
 Requires:   php-mysql
 Requires:   php-xml
 BuildArch:  noarch
-%if %mdkversion < 201010
-Requires(post):   rpm-helper
-Requires(postun):   rpm-helper
-%endif
-BuildRoot:  %{_tmppath}/%{name}-%{version}
 
 %description
 Php-Syslog-ng is a frontend for viewing syslog-ng messages logged to MySQL in
@@ -84,18 +77,9 @@ Alias /php-syslog-ng %{_var}/www/%{name}
 </Directory>
 EOF
 
-%post
-%if %mdkversion < 201010
-%_post_webapp
-%endif
 
-%postun
-%if %mdkversion < 201010
-%_postun_webapp
-%endif
 
 %clean
-rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
