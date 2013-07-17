@@ -1,10 +1,6 @@
-%define name    php-syslog-ng
-%define version 2.9.8
-%define release 7
-
-Name:       %{name}
-Version:    %{version}
-Release:    %{release}
+Name:       php-syslog-ng
+Version:    2.9.8
+Release:    8
 Summary:    Web frontend for syslog-ng
 License:    GPL
 Group:      System/Servers
@@ -28,8 +24,6 @@ time, and message.
 %patch -p 1
 
 %install
-rm -rf %buildroot
-
 install -d -m 755 %{buildroot}%{_var}/www/%{name}
 cp -pr html/*.php %{buildroot}%{_var}/www/%{name}
 cp -pr html/robots.txt %{buildroot}%{_var}/www/%{name}
@@ -66,14 +60,13 @@ cat > %{buildroot}%{_webappconfdir}/php-syslog-ng.conf <<EOF
 Alias /php-syslog-ng %{_var}/www/%{name}
 
 <Directory "%{_var}/www/%{name}">
-    Order allow,deny
-    Allow from all
+    Require all granted
     php_value memory_limit 128M 
     php_value max_execution_time 300
 </Directory>
 
 <Directory "%{_var}/www/%{name}/install">
-    Allow from localhost
+    Require host localhost
 </Directory>
 EOF
 
@@ -82,7 +75,6 @@ EOF
 %clean
 
 %files
-%defattr(-,root,root)
 %doc html/CHANGELOG html/LICENSE html/README html/TROUBLESHOOTING-INSTALL
 %config(noreplace) %{_webappconfdir}/php-syslog-ng.conf
 %dir %{_sysconfdir}/php-syslog-ng
