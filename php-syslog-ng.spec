@@ -1,6 +1,6 @@
 Name:       php-syslog-ng
 Version:    2.9.8
-Release:    8
+Release:    9
 Summary:    Web frontend for syslog-ng
 License:    GPL
 Group:      System/Servers
