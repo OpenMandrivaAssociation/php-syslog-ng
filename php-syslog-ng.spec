@@ -4,7 +4,7 @@ Release:    9
 Summary:    Web frontend for syslog-ng
 License:    GPL
 Group:      System/Servers
-URL:        http://code.google.com/p/php-syslog-ng/
+URL:        https://code.google.com/p/php-syslog-ng/
 Source0:    http://php-syslog-ng.googlecode.com/files/%{name}-%{version}.tgz
 Patch:      php-syslog-ng-2.9.8-fhs.patch
 Requires:   mod_php
